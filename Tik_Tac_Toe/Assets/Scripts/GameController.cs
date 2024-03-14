@@ -13,7 +13,12 @@ public class GameController : MonoBehaviour
     public Button[] tictactoespaces; //playable space for our game
     public int[] markedSpaces; //ID's which space was marked by which player
     public TMP_Text WinnerText; //hold the text component of the winner text
-    public GameObject[] winningLine; //holds all the different lines for showing that there is a winner
+    public GameObject[] WinningLine; //holds all the different lines for showing that there is a winner
+    public GameObject WinnerPanel;// screen that lets you not play after x/o wins
+    public int xPLayersScore;
+    public int oPLayersScore;
+    public TMP_Text xplayersScoreText;
+    public TMP_Text oplayersScoreText;
 
 
     // Start is called before the first frame update
@@ -95,20 +100,37 @@ public class GameController : MonoBehaviour
 
     void WinnerDisplay(int indexIn)
     {
-        WinnerText.gameObject.SetActive(true);
+        WinnerPanel.gameObject.SetActive(true);
         if(whoseTurn == 0)
         {
+            xPLayersScore++;
+            xplayersScoreText.text = xPLayersScore.ToString();
             WinnerText.text = "Player X Wins!";
         }
         else if (whoseTurn == 1)
         {
+            oPLayersScore++;
+            oplayersScoreText.text = oPLayersScore.ToString();
             WinnerText.text = "Player O Wins!";
         }
-        winningLine[indexIn].SetActive(true);
-        for(int i = 0; i <tictactoespaces.Length; i ++)
-        {
-            tictactoespaces[i].interactable = false;
-        }
+        WinningLine[indexIn].SetActive(true);
+        
     }
-
+    public void Rematch()//forloop through the array and disable every element array within it
+    {
+        GameSetup();
+        for(int i = 0;i <WinningLine.Length;i++)
+        {
+            WinningLine[i].SetActive(false);
+        }
+        WinnerPanel.SetActive(false);
+    }
+    public void Restart()
+    {
+        Rematch();
+        xPLayersScore = 0;
+        oPLayersScore = 0;
+        xplayersScoreText.text = "0";
+        oplayersScoreText.text = "0";
+    }
 }
