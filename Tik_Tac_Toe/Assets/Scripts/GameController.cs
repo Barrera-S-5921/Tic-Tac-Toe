@@ -21,6 +21,7 @@ public class GameController : MonoBehaviour
     public TMP_Text oplayersScoreText;
     public Button xPlayersButton;
     public Button oPlayerButton;
+    public GameObject CatImage;
 
 
     // Start is called before the first frame update
@@ -63,7 +64,13 @@ public class GameController : MonoBehaviour
         turnCount++;
         if(turnCount > 4)
         {
-            WinnerCheck();
+            bool isWinner = WinnerCheck();
+            if (turnCount == 9 && isWinner == false)
+            {
+                 Cat();
+            }
+           
+
         }
 
 
@@ -81,7 +88,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    void WinnerCheck()
+    bool WinnerCheck()
     {
         int s1 = markedSpaces[0] + markedSpaces[1] + markedSpaces[2]; // top row of 3x3 grid and adding them all together
         int s2 = markedSpaces[3] + markedSpaces[4] + markedSpaces[5];
@@ -97,9 +104,11 @@ public class GameController : MonoBehaviour
             if (solutions[i] == 3*(whoseTurn+1)) 
             {
                 WinnerDisplay(i);
-                return;
+                return true;
             }
         }
+
+        return false;
     }
 
     void WinnerDisplay(int indexIn)
@@ -130,6 +139,7 @@ public class GameController : MonoBehaviour
         WinnerPanel.SetActive(false);
         xPlayersButton.interactable = true;
         oPlayerButton.interactable = true;
+        CatImage.SetActive(false);
     }
     public void Restart()
     {
@@ -145,14 +155,22 @@ public class GameController : MonoBehaviour
         if(whichPlayer == 0){
             
             whoseTurn = 0;
-            turnIcons[0].SetActive(true);
-            turnIcons[1].SetActive(false);
+            turnicons[0].SetActive(true);
+            turnicons[1].SetActive(false);
         }
         else if(whichPlayer == 1){
             
             whoseTurn = 1;
-            turnIcons[0].SetActive(false);
-            turnIcons[1].SetActive(true);
+            turnicons[0].SetActive(false);
+            turnicons[1].SetActive(true);
         }
+    }
+
+    void Cat()
+    {
+        WinnerPanel.SetActive(true);
+        CatImage.SetActive(true);
+        WinnerText.text = "CAT";
+        
     }
 }
